@@ -32,10 +32,10 @@ const createUser = (req, res) => {
 const getUserById = (req,res) => {
   User.findById(req.params.userId)
   //если ни один документ не соответствует заданному условию фильтра:
-  .orFail(() => new Error('Document Not Found Error'))
+  .orFail(() => new Error('Not Found'))
   .then((user) => res.send(user))
   .catch((err) => {
-    if (err.name === 'BadRequestError') {
+    if (err.name === 'CastError') {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else if (err.message === 'Not Found') {
