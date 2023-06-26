@@ -31,7 +31,7 @@ const createCard = (req, res) => {
 }
 
 const deleteCard = (req,res) => {
-  Card.findOneAndRemove(req.params.cardId)
+  Card.findByIdAndRemove(req.params.cardId)
   //если ни один документ не соответствует заданному условию фильтра:
   .orFail(() => new Error('Document Not Found Error'))
   .then((card) => res.send(card))
