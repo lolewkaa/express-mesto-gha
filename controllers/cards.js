@@ -21,7 +21,7 @@ const createCard = (req, res) => {
   Card.create({name, link, owner: _id})
   .then((card) => res.send(card))
   .catch((err) => {
-    if (err.name === 'BadRequestError') {
+    if (err.name === 'ValidationError') {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else {
@@ -33,10 +33,10 @@ const createCard = (req, res) => {
 const deleteCard = (req,res) => {
   Card.findByIdAndRemove(req.params.cardId)
   //если ни один документ не соответствует заданному условию фильтра:
-  .orFail(() => new Error('Document Not Found Error'))
+  .orFail(() => new Error('Not Found'))
   .then((card) => res.send(card))
   .catch((err) => {
-    if (err.name === 'BadRequestError') {
+    if (err.name === 'CastError') {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else if (err.message === 'Not Found') {
@@ -56,10 +56,10 @@ const putLike = (req, res) => {
     { new: true }
     )
     //если ни один документ не соответствует заданному условию фильтра:
-  .orFail(() => new Error('Document Not Found Error'))
+  .orFail(() => new Error('Not Found'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'BadRequestError') {
+      if (err.name === 'CastError') {
         res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
         return;
       } else if (err.message === 'Not Found') {
@@ -78,10 +78,10 @@ Card.findByIdAndUpdate(
   { $pull: { likes: req.user._id } }, // убрать _id из массива
   { new: true }
 )
-.orFail(() => new Error('Document Not Found Error'))
+.orFail(() => new Error('Not Found'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'BadRequestError') {
+      if (err.name === 'CastError') {
         res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
         return;
       } else if (err.message === 'Not Found') {

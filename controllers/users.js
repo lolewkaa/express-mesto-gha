@@ -56,7 +56,7 @@ const updateUser = (req, res) => {
   User.findByIdAndUpdate(_id, {name, about}, {new: true, runValidators: true})
   .then((user) => res.send(user))
   .catch ((err) => {
-    if (err.name === 'BadRequestError') {
+    if (err.name === 'ValidationError') {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else {
@@ -71,7 +71,7 @@ const updateAvatar = (req, res) => {
   User.findByIdAndUpdate(_id, {avatar}, {new: true, runValidators: true})
   .then((avatar) => res.send(avatar))
   .catch((err) => {
-    if (err.name === 'BadRequestError') {
+    if (err.name === 'ValidationError') {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else {
