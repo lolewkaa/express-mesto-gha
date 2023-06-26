@@ -20,7 +20,7 @@ const createUser = (req, res) => {
   User.create({name, about, avatar})
   .then((user) => res.send(user))
   .catch((err) => {
-    if (err.name === 'BadRequestError') {
+    if (err.name === 'ValidationError') {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else {
