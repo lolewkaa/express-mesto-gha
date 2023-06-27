@@ -6,10 +6,9 @@ const getUsers = (req, res) => {
 
   User.find({})
   .then((users) => res.send(users))
-  .catch(err => {
+  .catch(() => {
     return res.status(ERROR_DEFAULT).send({
-      "message": `Произошла неизвестная ошибка`,
-      err: err.message
+      "message": `Произошла неизвестная ошибка`
     } )
   })
 }
@@ -24,7 +23,7 @@ const createUser = (req, res) => {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else {
-      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`, err: err.message})
+      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`})
     }
   })
 }
@@ -42,7 +41,7 @@ const getUserById = (req,res) => {
       res.status(ERROR_NOT_FOUND).send({message: `Пользователь не найден`})
       return;
     } else {
-    res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`, err: err.message})
+    res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`})
     return;
     }
   })
@@ -60,7 +59,7 @@ const updateUser = (req, res) => {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else {
-      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`, err: err.message})
+      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`})
     }
   })
 }
@@ -75,7 +74,7 @@ const updateAvatar = (req, res) => {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else {
-      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`, err: err.message})
+      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`})
     }
   })
 }

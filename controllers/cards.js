@@ -6,10 +6,9 @@ const getCards = (req, res) => {
 
   Card.find({})
   .then((cards) => res.send(cards))
-  .catch(err => {
+  .catch(() => {
     return res.status(ERROR_DEFAULT).send({
-      "message": `Произошла неизвестная ошибка`,
-      err: err.message
+      "message": `Произошла неизвестная ошибка`
     } )
   })
 }
@@ -25,7 +24,7 @@ const createCard = (req, res) => {
       res.status(ERROR_BAD_REQUEST).send({message: `Переданные данные некорректны`})
       return;
     } else {
-      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`, err: err.message})
+      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`})
     }
   })
 }
@@ -43,7 +42,7 @@ const deleteCard = (req,res) => {
       res.status(ERROR_NOT_FOUND).send({message: `Переданные данные некорректны`})
       return;
     } else {
-    res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`, err: err.message})
+    res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`})
     return;
     }
   })
@@ -66,7 +65,7 @@ const putLike = (req, res) => {
         res.status(ERROR_NOT_FOUND).send({message: `Переданные данные некорректны`})
         return;
       } else {
-      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`, err: err.message})
+      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`})
       return;
       }
     })
@@ -88,7 +87,7 @@ Card.findByIdAndUpdate(
         res.status(ERROR_NOT_FOUND).send({message: `Переданные данные некорректны`})
         return;
       } else {
-      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`, err: err.message})
+      res.status(ERROR_DEFAULT).send({message: `Неизвестная ошибка`})
       return;
       }
     })
