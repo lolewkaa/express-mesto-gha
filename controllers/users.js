@@ -8,7 +8,7 @@ const getUsers = (req, res) => {
   .then((users) => res.send(users))
   .catch(() => {
     return res.status(ERROR_DEFAULT).send({
-      "message": `Произошла неизвестная ошибка`
+      'message': `Произошла неизвестная ошибка`
     } )
   })
 }

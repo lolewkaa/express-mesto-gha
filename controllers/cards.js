@@ -8,7 +8,7 @@ const getCards = (req, res) => {
   .then((cards) => res.send(cards))
   .catch(() => {
     return res.status(ERROR_DEFAULT).send({
-      "message": `Произошла неизвестная ошибка`
+      'message': `Произошла неизвестная ошибка`
     } )
   })
 }
