@@ -36,5 +36,11 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
 });
+
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.password;
+  return user;
+};
 // создаем модель и экспортируем ее
 module.exports = mongoose.model('user', userSchema);
