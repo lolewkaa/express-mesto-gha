@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const router = require('./routes');
 
-const { ERROR_DEFAULT } = require('./errors/errors');
+const errorHandler = require('./middlewares/error-handler');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
@@ -18,12 +18,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 app.use(router);
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  const { statusCode = ERROR_DEFAULT } = err;
-  const message = statusCode === ERROR_DEFAULT ? 'На сервере произошла ошибка' : err.message;
-  res.status(statusCode).send({ message });
-  next();
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает
