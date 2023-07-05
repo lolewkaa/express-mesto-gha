@@ -94,6 +94,7 @@ const login = (req, res, next) => {
             res.cookie('token', token, {
               maxAge: 360000,
               httpOnly: true,
+              sameSite: true,
             });
             res.send(user);
           } else {

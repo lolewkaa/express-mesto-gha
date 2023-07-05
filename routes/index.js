@@ -3,11 +3,11 @@ const userRoutes = require('./users');
 const cardRoutes = require('./cards');
 const { createUser, login } = require('../controllers/users');
 const auth = require('../middlewares/auth');
-const { validationCreateUser, validationLogin } = require('../utils/regex');
 const { NotFoundError } = require('../errors/not-found-err');
+const { validationCreateUser, validationLogin } = require('../utils/regex');
 
-router.post('/signin', validationLogin, login);
 router.post('/signup', validationCreateUser, createUser);
+router.post('/signin', validationLogin, login);
 
 router.use(auth);
 
