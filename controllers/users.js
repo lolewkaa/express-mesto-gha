@@ -21,13 +21,14 @@ const createUser = (req, res, next) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-
-    .then((user) => res.send(user.toJSON()))
+    .then((user) => res.status(201).send(user.toJSON()))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданные данные некорректны'));
-      } else if (err.code === 11000) {
+        return;
+      } if (err.code === 11000) {
         next(new ErrorConflict('При регистрации указан email, который уже существует'));
+        return;
       }
       next(err);
     });
@@ -45,6 +46,7 @@ const getUserById = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Переданные данные некорректы'));
+        return;
       }
       next(err);
     });

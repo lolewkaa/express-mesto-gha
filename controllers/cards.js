@@ -15,7 +15,7 @@ const createCard = (req, res, next) => {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: _id })
-    .then((card) => res.send(card))
+    .then((card) => res.status(201).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданные данные некорректны'));
@@ -26,17 +26,21 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    // если ни один документ не соответствует заданному условию фильтра:
-    .orFail(() => new NotFoundError('Карточка не найдена'))
+  const { id: cardId } = req.params;
+  const { userId } = req.user;
+
+  Card.findById({
+    _id: cardId,
+  })
     .then((card) => {
-      if (card.owner.toString() === req.user._id) {
-        card.deleteOne(card)
-          .then((cards) => res.send(cards))
-          .catch(next);
-      } else {
-        throw new ErrorForbidden('Попытка удалить чужую карточку');
-      }
+      if (!card) throw new NotFoundError('Карточка не найдена');
+
+      const { owner: cardUser } = card;
+      if (cardUser.valueOf() !== userId) throw new ErrorForbidden('Попытка удалить чужую карточку');
+
+      card.remove()
+        .then(() => res.send({ data: card }))
+        .catch(next);
     })
     .catch(next);
 };
@@ -51,7 +55,7 @@ const putLike = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
       } else {
-        next(res.send(card));
+        res.send(card);
       }
     })
     .catch((err) => {
@@ -73,7 +77,7 @@ const dislikeCard = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
       } else {
-        next(res.send(card));
+        res.send(card);
       }
     })
     .catch((err) => {
