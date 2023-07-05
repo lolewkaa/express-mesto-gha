@@ -91,7 +91,7 @@ const login = (req, res, next) => {
         .then((validUser) => {
           if (validUser) {
             const token = jwt.sign({ _id: user._id }, 'secret-key');
-            res.cookie('token', token, {
+            res.cookie('jwt', token, {
               maxAge: 360000,
               httpOnly: true,
               sameSite: true,
