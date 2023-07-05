@@ -26,7 +26,7 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  const { _id: cardId } = req.params;
+  const { cardId } = req.params;
   const { userId } = req.user;
 
   Card.findById({
@@ -39,7 +39,7 @@ const deleteCard = (req, res, next) => {
       if (cardUser.valueOf() !== userId) throw new ErrorForbidden('Попытка удалить чужую карточку');
 
       card.remove()
-        .then(() => res.send({ data: card }))
+        .then(() => res.send(card))
         .catch(next);
     })
     .catch(next);
