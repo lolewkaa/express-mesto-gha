@@ -35,8 +35,6 @@ const createUser = (req, res, next) => {
 
 const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
-  // если ни один документ не соответствует заданному условию фильтра:
-    .orFail(() => new Error('Not Found'))
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
