@@ -88,13 +88,15 @@ const login = (req, res, next) => {
       bcrypt.compare(password, user.password)
         .then((validUser) => {
           if (validUser) {
-            const token = jwt.sign({ _id: user._id }, 'secret-key');
-            res.cookie('jwt', token, {
-              maxAge: 360000,
-              httpOnly: true,
-              sameSite: true,
-            });
-            res.send(user);
+            const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d' });
+            // const token = jwt.sign({ _id: user._id }, 'secret-key');
+            // res.cookie('jwt', token, {
+            //   maxAge: 360000,
+            //   httpOnly: true,
+            //   sameSite: true,
+            // });
+            res.send({ token });
+            // res.send(user);
           } else {
             throw new ErrorAuth('Передан неверный логин или пароль');
           }
