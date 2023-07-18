@@ -2,8 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
-
 const ErrorAuth = require('../errors/auth-error');
 const ErrorConflict = require('../errors/conflict-error');
 const BadRequestError = require('../errors/bad-request-err');
@@ -92,7 +90,7 @@ const login = (req, res, next) => {
       bcrypt.compare(password, user.password)
         .then((validUser) => {
           if (validUser) {
-            const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
+            const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d' });
             res.send({ token });
           } else {
             throw new ErrorAuth('Передан неверный логин или пароль');
