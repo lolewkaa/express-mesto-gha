@@ -16,7 +16,9 @@ const { PORT, MONGO_DB } = require('./utils/constant');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://lolewka.domainname.studen.nomoredomains.xyz', 'http://lolewka.domainname.studen.nomoredomains.xyz'],
+}));
 // анализирует входящие запросы JSON и помещает проанализированные данные в файлы req.body
 app.use(express.json());
 app.use(requestLogger);
