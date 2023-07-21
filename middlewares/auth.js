@@ -8,6 +8,7 @@ const auth = (req, res, next) => {
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
     next(new ErrorAuth('Необходимо авторизоваться'));
+    return;
   }
 
   const token = authorization.replace('Bearer ', '');
@@ -17,7 +18,8 @@ const auth = (req, res, next) => {
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key');
   } catch (err) {
-    throw new ErrorAuth('Необходимо авторизоваться');
+    next(new ErrorAuth('Необходимо авторизоваться'));
+    return;
   }
 
   req.user = payload;

@@ -61,7 +61,7 @@ const putLike = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         next(new BadRequestError('Переданные данные некорректны'));
       } else {
         next(err);
@@ -84,7 +84,7 @@ const dislikeCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         next(new BadRequestError('Переданные данные некорректны'));
       } else {
         next(err);
