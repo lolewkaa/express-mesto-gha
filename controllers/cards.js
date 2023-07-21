@@ -6,6 +6,7 @@ const ErrorForbidden = require('../errors/forbidden-error');
 
 const getCards = (req, res, next) => {
   Card.find({})
+    .populate(['owner', 'likes'])
     .then((cards) => res.send(cards))
     .catch(next);
 };
@@ -14,8 +15,14 @@ const createCard = (req, res, next) => {
   const { _id } = req.user;
   const { name, link } = req.body;
 
-  Card.create({ name, link, owner: _id })
-    .then((card) => res.status(201).send(card))
+  Card
+    .create({ name, link, owner: _id })
+    .then((card) => {
+      card
+        .populate('owner')
+        .then(() => res.status(201).send(card))
+        .catch(next);
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданные данные некорректны'));
@@ -45,6 +52,7 @@ const putLike = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
+    .populate(['owner', 'likes'])
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
@@ -67,6 +75,7 @@ const dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
+    .populate(['owner', 'likes'])
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
